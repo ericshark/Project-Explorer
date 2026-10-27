@@ -1,0 +1,53 @@
+{
+  "name": "project-explorer",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Local dashboard for every project in ~/GitHub: docs, worktrees, and one-click dev servers.",
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "concurrently -k -n server,web -c blue,magenta \"node --watch-path=server --watch-preserve-output server/index.ts\" \"vite\"",
+    "build": "vite build",
+    "start": "vite build && node server/index.ts",
+    "serve": "node server/index.ts",
+    "typecheck": "tsc -b",
+    "lint": "oxlint",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "@hono/node-server": "^2.1.5",
+    "hono": "^4.13.13"
+  },
+  "devDependencies": {
+    "@fontsource-variable/geist": "^5.3.0",
+    "@fontsource-variable/geist-mono": "^5.3.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "@tanstack/react-query": "^5.104.5",
+    "@types/node": "^24.19.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "ansi_up": "^6.0.6",
+    "concurrently": "^10.0.6",
+    "highlight.js": "^11.12.0",
+    "lucide-react": "^1.61.0",
+    "oxlint": "^1.89.0",
+    "prettier": "^3.9.10",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-markdown": "^10.1.0",
+    "react-router-dom": "^7.18.4",
+    "rehype-highlight": "^7.0.2",
+    "remark-gfm": "^4.0.1",
+    "tailwindcss": "^4.3.3",
+    "typescript": "~6.0.3",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
+  },
+  "license": "MIT"
+}

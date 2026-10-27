@@ -1,0 +1,11 @@
+dist
+node_modules
+package-lock.json
+.hub
+
+private.env
+.env
+.env.*
+hub.local.json
+*.bundle
+*-private-backup*/

@@ -1,0 +1,16 @@
+node_modules
+dist
+.hub/
+*.tsbuildinfo
+test-results
+
+# Personal settings and credentials stay on this machine.
+.env
+.env.*
+!.env.example
+*.env
+*.env.*
+!*.env.example
+hub.local.json
+*-private-backup*/
+*.bundle

@@ -1,0 +1,414 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/geist';
+@import '@fontsource-variable/geist-mono';
+
+:root {
+  --bg: #f6f6f3;
+  --surface: #ffffff;
+  --surface-2: #f0efeb;
+  --border: #e4e3de;
+  --border-strong: #d2d1cb;
+  --text: #19191b;
+  --muted: #6c6b66;
+  --faint: #9a9993;
+  --accent: #19191b;
+  --accent-text: #ffffff;
+  --link: #2f5bd3;
+  --ok: #138a52;
+  --ok-text: #ffffff;
+  --ok-soft: #e3f4ea;
+  --warn: #a76100;
+  --warn-soft: #fbf0dc;
+  --bad: #c4322b;
+  --bad-soft: #fbe5e3;
+  --code-bg: #f3f2ee;
+  --log-bg: #141416;
+  --log-text: #d9d9d6;
+  --log-muted: #7c7c78;
+  --ring: rgb(47 91 211 / 0.35);
+  /* Commit heatmap: one green, light to dark; level 1 clears 2:1 against the surface. */
+  --heat-0: #ebeae5;
+  --heat-1: #6fc290;
+  --heat-2: #3ea468;
+  --heat-3: #218049;
+  --heat-4: #125530;
+  /* Commits-by-stack categories, in a fixed order per stack (validated for CVD and both surfaces). */
+  --stack-fullstack: #2a78d6;
+  --stack-next: #eb6834;
+  --stack-vite-react: #1baf7a;
+  --stack-python: #6250d6;
+  --stack-node: #eda100;
+  --stack-vite: #e87ba4;
+  --stack-other: #9a9993;
+  /* Branch identity colors in the commit graph; no greens or reds, which mean working-tree status. */
+  --branch-1: #2a78d6;
+  --branch-2: #eb6834;
+  --branch-3: #6250d6;
+  --branch-4: #eda100;
+  --branch-5: #e87ba4;
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --bg: #0f0f11;
+  --surface: #17171a;
+  --surface-2: #1f1f23;
+  --border: #2a2a2f;
+  --border-strong: #3a3a40;
+  --text: #ededea;
+  --muted: #a09f9a;
+  --faint: #6f6e6a;
+  --accent: #ededea;
+  --accent-text: #111113;
+  --link: #8fb0ff;
+  --ok: #3ecf8e;
+  --ok-text: #0b0b0d;
+  --ok-soft: rgb(62 207 142 / 0.12);
+  --warn: #f0b44c;
+  --warn-soft: rgb(240 180 76 / 0.12);
+  --bad: #ff6b61;
+  --bad-soft: rgb(255 107 97 / 0.12);
+  --code-bg: #1d1d21;
+  --log-bg: #0b0b0d;
+  --ring: rgb(143 176 255 / 0.4);
+  /* Dark mode runs the ramp the other way: more commits, brighter green. */
+  --heat-0: #26262b;
+  --heat-1: #1d5a3b;
+  --heat-2: #26874f;
+  --heat-3: #3cb873;
+  --heat-4: #6ee29f;
+  --stack-fullstack: #3987e5;
+  --stack-next: #d95926;
+  --stack-vite-react: #199e70;
+  --stack-python: #9085e9;
+  --stack-node: #c98500;
+  --stack-vite: #d55181;
+  --stack-other: #6f6e6a;
+  --branch-1: #3987e5;
+  --branch-2: #d95926;
+  --branch-3: #9085e9;
+  --branch-4: #c98500;
+  --branch-5: #d55181;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-accent: var(--accent);
+  --color-accent-text: var(--accent-text);
+  --color-link: var(--link);
+  --color-ok: var(--ok);
+  --color-ok-text: var(--ok-text);
+  --color-ok-soft: var(--ok-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-bad: var(--bad);
+  --color-bad-soft: var(--bad-soft);
+  --color-code: var(--code-bg);
+  --color-log: var(--log-bg);
+  --color-log-text: var(--log-text);
+  --color-log-muted: var(--log-muted);
+  --color-heat-0: var(--heat-0);
+  --color-heat-1: var(--heat-1);
+  --color-heat-2: var(--heat-2);
+  --color-heat-3: var(--heat-3);
+  --color-heat-4: var(--heat-4);
+  --color-branch-1: var(--branch-1);
+  --color-branch-2: var(--branch-2);
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 1.2s ease-in-out infinite;
+}
+
+/* Rendered markdown (README and docs/) */
+.markdown {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+.markdown > :first-child {
+  margin-top: 0;
+}
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4 {
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  margin: 1.8em 0 0.6em;
+}
+.markdown h1 {
+  font-size: 1.75em;
+  letter-spacing: -0.02em;
+}
+.markdown h2 {
+  font-size: 1.3em;
+  padding-bottom: 0.35em;
+  border-bottom: 1px solid var(--border);
+}
+.markdown h3 {
+  font-size: 1.1em;
+}
+.markdown p,
+.markdown ul,
+.markdown ol,
+.markdown pre,
+.markdown table,
+.markdown blockquote {
+  margin: 0 0 1em;
+}
+.markdown ul,
+.markdown ol {
+  padding-left: 1.4em;
+}
+.markdown ul {
+  list-style: disc;
+}
+.markdown ol {
+  list-style: decimal;
+}
+.markdown li + li {
+  margin-top: 0.25em;
+}
+.markdown li > ul,
+.markdown li > ol {
+  margin: 0.25em 0 0;
+}
+.markdown a {
+  color: var(--link);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--link) 35%, transparent);
+  text-underline-offset: 2px;
+}
+.markdown a:hover {
+  text-decoration-color: var(--link);
+}
+.markdown strong {
+  font-weight: 600;
+}
+.markdown code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 0.1em 0.35em;
+}
+.markdown pre {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  overflow-x: auto;
+  line-height: 1.55;
+}
+.markdown pre code {
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: 13px;
+}
+.markdown blockquote {
+  border-left: 3px solid var(--border-strong);
+  padding-left: 1em;
+  color: var(--muted);
+}
+.markdown hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+.markdown img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+.markdown table {
+  display: block;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.markdown th,
+.markdown td {
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  text-align: left;
+}
+.markdown th {
+  background: var(--surface-2);
+  font-weight: 600;
+}
+.markdown input[type='checkbox'] {
+  margin-right: 0.4em;
+}
+
+/* highlight.js tokens, themed with the page tokens */
+.hljs-comment,
+.hljs-quote {
+  color: var(--faint);
+  font-style: italic;
+}
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-built_in,
+.hljs-meta .hljs-keyword {
+  color: #a23ccf;
+}
+.hljs-string,
+.hljs-regexp,
+.hljs-addition,
+.hljs-meta .hljs-string {
+  color: #1d7f45;
+}
+.hljs-number,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-attr,
+.hljs-attribute {
+  color: #b35400;
+}
+.hljs-title,
+.hljs-section,
+.hljs-title.function_,
+.hljs-name {
+  color: #2456c9;
+}
+.hljs-type,
+.hljs-class .hljs-title,
+.hljs-symbol {
+  color: #9c5d00;
+}
+.hljs-deletion {
+  color: var(--bad);
+}
+.hljs-meta {
+  color: var(--muted);
+}
+:root[data-theme='dark'] .hljs-keyword,
+:root[data-theme='dark'] .hljs-selector-tag,
+:root[data-theme='dark'] .hljs-literal,
+:root[data-theme='dark'] .hljs-built_in {
+  color: #d7a0ff;
+}
+:root[data-theme='dark'] .hljs-string,
+:root[data-theme='dark'] .hljs-regexp,
+:root[data-theme='dark'] .hljs-addition {
+  color: #8fdca6;
+}
+:root[data-theme='dark'] .hljs-number,
+:root[data-theme='dark'] .hljs-variable,
+:root[data-theme='dark'] .hljs-attr,
+:root[data-theme='dark'] .hljs-attribute {
+  color: #ffb27a;
+}
+:root[data-theme='dark'] .hljs-title,
+:root[data-theme='dark'] .hljs-section,
+:root[data-theme='dark'] .hljs-name {
+  color: #8fb0ff;
+}
+:root[data-theme='dark'] .hljs-type,
+:root[data-theme='dark'] .hljs-symbol {
+  color: #f0c674;
+}
+/* Log output: always a dark terminal, so ANSI colours read the way tools intend. */
+.log-line .ansi-black-fg {
+  color: #6e6e6a;
+}
+.log-line .ansi-red-fg {
+  color: #ff6b61;
+}
+.log-line .ansi-green-fg {
+  color: #3ecf8e;
+}
+.log-line .ansi-yellow-fg {
+  color: #f0c674;
+}
+.log-line .ansi-blue-fg {
+  color: #7aa2ff;
+}
+.log-line .ansi-magenta-fg {
+  color: #d7a0ff;
+}
+.log-line .ansi-cyan-fg {
+  color: #66d9e8;
+}
+.log-line .ansi-white-fg {
+  color: #e8e8e4;
+}
+.log-line .ansi-bright-black-fg {
+  color: #8a8a85;
+}
+.log-line .ansi-bright-red-fg {
+  color: #ff8a80;
+}
+.log-line .ansi-bright-green-fg {
+  color: #6be3a8;
+}
+.log-line .ansi-bright-yellow-fg {
+  color: #ffd98a;
+}
+.log-line .ansi-bright-blue-fg {
+  color: #9bbcff;
+}
+.log-line .ansi-bright-magenta-fg {
+  color: #e4bcff;
+}
+.log-line .ansi-bright-cyan-fg {
+  color: #93e8f2;
+}
+.log-line .ansi-bright-white-fg {
+  color: #ffffff;
+}
+.log-line .ansi-red-bg {
+  background: rgb(255 107 97 / 0.25);
+}
+.log-line .ansi-green-bg {
+  background: rgb(62 207 142 / 0.25);
+}
+.log-line .ansi-yellow-bg {
+  background: rgb(240 198 116 / 0.25);
+}
+.log-line .ansi-blue-bg {
+  background: rgb(122 162 255 / 0.25);
+}
