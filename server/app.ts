@@ -28,6 +28,7 @@ import {
   pull,
   push,
 } from './git.ts'
+import { hostingRoutes } from './hosting.ts'
 import { capabilities, openIn } from './open.ts'
 import { findFreePort, waitForFreePort } from './ports.ts'
 import { isActive, type ProcessManager } from './processes.ts'
@@ -203,6 +204,8 @@ export function createApp(processes: ProcessManager, fetcher: Fetcher, activity:
   })
 
   app.use('*', localOnly)
+
+  app.route('/api/hosting', hostingRoutes())
 
   app.get('/api/meta', (c) => {
     const meta: HubMeta = {

@@ -14,6 +14,7 @@ import { GitDialogs } from './GitDialogs.tsx'
 import { GitPanel } from './GitPanel.tsx'
 import { LogsPanel } from './LogsPanel.tsx'
 import { ServicesPanel } from './ServicesPanel.tsx'
+import { ProjectHostingLink } from './ProjectHostingLink.tsx'
 import { Button, Chip, GitHubMark, Panel, StatusDot } from './ui.tsx'
 
 type Tab = 'docs' | 'logs'
@@ -251,6 +252,7 @@ export function ProjectPage() {
         </div>
 
         <div className="flex flex-wrap items-center gap-1.5">
+          <ProjectHostingLink projectId={id} />
           {meta?.can.vscode && (
             <Button
               size="sm"

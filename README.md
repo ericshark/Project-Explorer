@@ -146,3 +146,9 @@ npm run build
 ## License
 
 [MIT](LICENSE). You may use, modify, and redistribute the code, including commercially, under that license.
+
+## Hosting guides
+
+The sidebar’s **Hosting** section contains read-only local and public deployment recipes for Vercel, Render, and Supabase. Open a guide directly or use **Hosting guide** on a mapped project page. It does not deploy applications or change accounts. Project Explorer itself should remain local.
+
+Shared recipes live in `docs/hosting/`. Personal guides and project mappings belong in the Git-ignored `.hosting/` folder; see [content setup](docs/hosting/README.md). Back that folder up separately. Personal content is loaded by the local server and is not bundled into the frontend.

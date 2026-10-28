@@ -14,3 +14,6 @@ test-results
 hub.local.json
 *-private-backup*/
 *.bundle
+
+# Local hosting guides, project mappings, and personal infrastructure notes.
+.hosting/

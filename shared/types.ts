@@ -262,3 +262,24 @@ export interface HubMeta {
 }
 
 export type OpenTarget = 'vscode' | 'explorer' | 'terminal'
+
+export interface HostingGuideSummary {
+  id: string
+  title: string
+  description: string
+  category: string
+  order: number
+  projects: { id: string; name: string }[]
+  providers: string[]
+  cost: string
+  private: boolean
+}
+
+export interface HostingCatalog {
+  guides: HostingGuideSummary[]
+  warnings: string[]
+}
+
+export interface HostingGuide extends HostingGuideSummary {
+  content: string
+}

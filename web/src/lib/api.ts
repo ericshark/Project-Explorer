@@ -8,6 +8,8 @@ import type {
   FileDiff,
   GraphData,
   HubMeta,
+  HostingCatalog,
+  HostingGuide,
   OpenTarget,
   ProjectDetail,
   ProjectSummary,
@@ -37,6 +39,8 @@ export type CheckoutTarget = { branch: string } | { commit: string }
 const project = (id: string) => `/api/projects/${encodeURIComponent(id)}`
 
 export const api = {
+  hosting: () => request<HostingCatalog>('/api/hosting'),
+  hostingGuide: (id: string) => request<HostingGuide>(`/api/hosting/${encodeURIComponent(id)}`),
   meta: () => request<HubMeta>('/api/meta'),
   activity: (projectId?: string) =>
     request<ActivitySummary>(

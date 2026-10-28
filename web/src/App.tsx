@@ -1,5 +1,5 @@
 import { Menu, X } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import { Overview } from './components/Overview.tsx'
 import { ProjectPage } from './components/ProjectPage.tsx'
@@ -8,6 +8,10 @@ import { useHubEvents } from './lib/events.ts'
 import { useTheme } from './lib/theme.ts'
 import { cn } from './lib/format.ts'
 import { dismissToast, useToasts } from './lib/toast.ts'
+
+const HostingPage = lazy(() =>
+  import('./components/HostingPage.tsx').then((m) => ({ default: m.HostingPage })),
+)
 
 function Toasts() {
   const toasts = useToasts()
@@ -93,6 +97,22 @@ export function App() {
       <main className="md:pl-64">
         <Routes>
           <Route path="/" element={<Overview />} />
+          <Route
+            path="/hosting"
+            element={
+              <Suspense fallback={<p className="p-8 text-muted">Loading…</p>}>
+                <HostingPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/hosting/:guideId"
+            element={
+              <Suspense fallback={<p className="p-8 text-muted">Loading…</p>}>
+                <HostingPage />
+              </Suspense>
+            }
+          />
           <Route path="/p/:id" element={<ProjectPage />} />
           <Route path="*" element={<Overview />} />
         </Routes>

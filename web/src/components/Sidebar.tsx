@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { GitBranch, LayoutGrid, Monitor, Moon, Settings, Sun } from 'lucide-react'
+import { BookOpen, GitBranch, LayoutGrid, Monitor, Moon, Settings, Sun } from 'lucide-react'
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import type { ProjectSummary } from '../../../shared/types.ts'
@@ -75,6 +75,19 @@ export function Sidebar({ onNavigate, theme, onCycleTheme, onSetTheme }: Sidebar
               {running.length} running
             </span>
           )}
+        </NavLink>
+        <NavLink
+          to="/hosting"
+          onClick={onNavigate}
+          className={({ isActive }) =>
+            cn(
+              'mt-1 flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-[13.5px]',
+              isActive ? 'bg-surface-2 font-medium text-text' : 'text-muted hover:text-text',
+            )
+          }
+        >
+          <BookOpen className="size-4" />
+          Hosting
         </NavLink>
       </div>
 
