@@ -5,7 +5,6 @@ import { attentionItems, getGitInfo, getRemoteUrl, listWorktrees } from './git.t
 import type { ProcessManager } from './processes.ts'
 import { HttpError } from './security.ts'
 import {
-  envWarnings,
   installedPaths,
   missingSetup,
   readPackageJson,
@@ -238,7 +237,6 @@ export async function buildWorktreeInfo(
     setup,
     missing: missingSetup(worktree.path, setup),
     installed: installedPaths(worktree.path, setup),
-    envWarnings: envWarnings(worktree.path, services),
     docs: listDocs(worktree.path),
     runs: processes.list({ projectId: repo.id, worktree: worktree.path }),
   }

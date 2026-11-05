@@ -108,20 +108,6 @@ export function uninstall(worktree: string, setup: SetupStep[]): string[] {
   return paths
 }
 
-export function envWarnings(worktree: string, services: ServiceDef[]): string[] {
-  const dirs = new Set(['', ...services.map((service) => service.cwd ?? '')])
-  const warnings: string[] = []
-  for (const dir of dirs) {
-    const base = join(worktree, dir)
-    if (existsSync(join(base, '.env.example')) && !existsSync(join(base, '.env'))) {
-      warnings.push(
-        `${dir ? `${dir}/` : ''}.env is missing (see ${dir ? `${dir}/` : ''}.env.example)`,
-      )
-    }
-  }
-  return warnings
-}
-
 export function usesPort(service: ServiceDef): boolean {
   const text = [service.command, service.url ?? '', ...Object.values(service.env ?? {})].join(' ')
   return text.includes('{port}')

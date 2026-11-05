@@ -5,7 +5,6 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import {
   detectServices,
   detectSetup,
-  envWarnings,
   installedPaths,
   missingSetup,
   renderTemplate,
@@ -70,16 +69,6 @@ describe('setup detection', () => {
     expect(missingSetup(dir, setup)).toEqual(['install'])
     mkdirSync(join(dir, 'node_modules'))
     expect(missingSetup(dir, setup)).toEqual([])
-  })
-
-  it('warns about a missing .env next to an .env.example', () => {
-    mkdirSync(join(dir, 'backend'))
-    writeFileSync(join(dir, 'backend/.env.example'), 'KEY=')
-    expect(envWarnings(dir, [{ name: 'api', cwd: 'backend', command: 'x' }])).toEqual([
-      'backend/.env is missing (see backend/.env.example)',
-    ])
-    writeFileSync(join(dir, 'backend/.env'), 'KEY=1')
-    expect(envWarnings(dir, [{ name: 'api', cwd: 'backend', command: 'x' }])).toEqual([])
   })
 })
 

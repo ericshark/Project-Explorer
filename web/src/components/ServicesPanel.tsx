@@ -211,20 +211,12 @@ export function ServicesPanel({
         )}
       </div>
 
-      {(needsInstall || worktree.envWarnings.length > 0) && (
+      {needsInstall && (
         <ul className="space-y-1 border-b border-border bg-warn-soft/60 px-4 py-2.5 text-[13px] text-warn">
-          {needsInstall && (
-            <li className="flex gap-2">
-              <AlertTriangle className="mt-0.5 size-3.5 shrink-0" />
-              Missing in this checkout: {worktree.missing.join(', ')}. Install before running.
-            </li>
-          )}
-          {worktree.envWarnings.map((warning) => (
-            <li key={warning} className="flex gap-2">
-              <AlertTriangle className="mt-0.5 size-3.5 shrink-0" />
-              {warning}
-            </li>
-          ))}
+          <li className="flex gap-2">
+            <AlertTriangle className="mt-0.5 size-3.5 shrink-0" />
+            Missing in this checkout: {worktree.missing.join(', ')}. Install before running.
+          </li>
         </ul>
       )}
 

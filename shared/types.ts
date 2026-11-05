@@ -123,7 +123,6 @@ export interface WorktreeInfo extends WorktreeRef {
   missing: string[]
   /** `creates` paths that exist, i.e. what Uninstall would delete. */
   installed: string[]
-  envWarnings: string[]
   docs: string[]
   runs: RunInfo[]
 }
