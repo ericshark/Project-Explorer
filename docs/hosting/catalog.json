@@ -1,25 +1,14 @@
 [
   {
     "id": "vercel-static",
-    "title": "Static frontend on Vercel",
-    "description": "Build a browser-only application and publish its static assets.",
+    "title": "Deploy a frontend on Vercel",
+    "description": "One setup for Vite and Next.js, with build settings for each.",
     "category": "Shared recipes",
     "order": 110,
     "projects": [],
     "providers": ["Vercel"],
     "cost": "Hobby $0 for eligible personal use; Pro from $20/month plus usage.",
     "file": "vercel-static.md"
-  },
-  {
-    "id": "vercel-next",
-    "title": "Next.js on Vercel",
-    "description": "Deploy static exports or Next.js server routes with the right framework settings.",
-    "category": "Shared recipes",
-    "order": 111,
-    "projects": [],
-    "providers": ["Vercel"],
-    "cost": "Hobby $0 for eligible personal use; Pro from $20/month plus usage.",
-    "file": "vercel-next.md"
   },
   {
     "id": "render-services",

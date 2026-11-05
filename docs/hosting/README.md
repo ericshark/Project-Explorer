@@ -20,7 +20,7 @@ Create `.hosting/catalog.json` and Markdown files under `.hosting/` in the repos
 }
 ```
 
-Use stable unique lowercase/hyphen IDs; IDs must not collide with shared recipes. `projects` maps to the IDs returned by `/api/projects`. Unavailable projects appear as text, not broken links. Guides sort by ascending `order`, then title; categories appear in first-occurrence order. Use contiguous order ranges per category.
+Use stable unique lowercase/hyphen IDs; IDs must not collide with shared recipes. `projects` maps to the IDs returned by `/api/projects`. Unavailable projects appear as text, not broken links. Within each list (Your guides and Shared guides), guides sort by ascending `order`, then title.
 
 Guide links use `/hosting/guide-id`; section links use `#heading-name` (lowercase, spaces become hyphens). HTTP(S) links open externally. Markdown is rendered without embedded HTML or images. File paths never appear in the catalog API.
 

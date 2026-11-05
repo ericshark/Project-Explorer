@@ -1,13 +1,13 @@
 import { useQuery } from '@tanstack/react-query'
-import { ArrowLeft, ArrowUpRight, BookOpen, Check, Copy } from 'lucide-react'
+import { ArrowLeft, ArrowUpRight, Check, Copy } from 'lucide-react'
 import { useEffect, useRef, useState, type ComponentPropsWithoutRef } from 'react'
-import { Link, useLocation, useParams } from 'react-router-dom'
+import { Link, Navigate, useLocation, useParams } from 'react-router-dom'
 import Markdown, { type Components } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeHighlight from 'rehype-highlight'
 import { api } from '../lib/api.ts'
 import { hostingHeadings } from '../lib/hosting-markdown.ts'
-import { Button, Chip } from './ui.tsx'
+import { Button } from './ui.tsx'
 
 const EXTERNAL = /^https?:\/\//i
 function CodeBlock({ children, ...props }: ComponentPropsWithoutRef<'pre'>) {
@@ -100,33 +100,7 @@ function GuideDetail({ id }: { id: string }) {
           Could not load guide: {error.message}
         </p>
       )}
-      {data && (
-        <>
-          <div className="mb-5 flex flex-wrap gap-2">
-            {data.providers.map((p) => (
-              <Chip key={p}>{p}</Chip>
-            ))}
-            <Chip>{data.private ? 'Personal guide' : 'Shared recipe'}</Chip>
-          </div>
-          <nav
-            aria-label="Guide sections"
-            className="mb-6 flex flex-wrap gap-x-4 gap-y-2 border-y border-border py-3 text-[12px] text-muted"
-          >
-            {['Summary', 'Run locally', 'Deploy publicly', 'Domain', 'Cost']
-              .filter((title) => data.content.includes(`## ${title}\n`))
-              .map((title) => (
-                <Link
-                  key={title}
-                  className="hover:text-link"
-                  to={`#${title.toLowerCase().replaceAll(' ', '-')}`}
-                >
-                  {title}
-                </Link>
-              ))}
-          </nav>
-          <HostingMarkdown key={id} content={data.content} />
-        </>
-      )}
+      {data && <HostingMarkdown key={id} content={data.content} />}
     </>
   )
 }
@@ -134,22 +108,13 @@ function GuideDetail({ id }: { id: string }) {
 function HostingIndex() {
   const { data, isLoading, error } = useQuery({ queryKey: ['hosting'], queryFn: api.hosting })
   const { data: projects = [] } = useQuery({ queryKey: ['projects'], queryFn: api.projects })
-  const groups = new Map<string, NonNullable<typeof data>['guides']>()
-  for (const guide of data?.guides ?? [])
-    groups.set(guide.category, [...(groups.get(guide.category) ?? []), guide])
+  const groups = [
+    { title: 'Your guides', guides: data?.guides.filter((guide) => guide.private) },
+    { title: 'Shared guides', guides: data?.guides.filter((guide) => !guide.private) },
+  ]
   return (
     <>
-      <header className="mb-8">
-        <p className="mb-2 flex items-center gap-2 text-[12px] font-medium text-muted">
-          <BookOpen className="size-4" />
-          Reference library
-        </p>
-        <h1 className="text-3xl font-semibold tracking-tight">Hosting</h1>
-        <p className="mt-3 max-w-2xl text-[14px] leading-relaxed text-muted">
-          From running locally to going live. Start with the simplest setup, then follow the steps
-          your project needs.
-        </p>
-      </header>
+      <h1 className="mb-6 text-3xl font-semibold tracking-tight">Hosting</h1>
       {isLoading && (
         <p role="status" className="text-muted">
           Loading hosting guides…
@@ -168,57 +133,50 @@ function HostingIndex() {
       {data && !data.guides.length && (
         <p className="text-muted">No hosting guides are available yet.</p>
       )}
-      {[...groups].map(([category, guides]) => (
-        <section key={category} className="mb-8" aria-label={category}>
-          <h2 className="mb-3 text-[15px] font-semibold">{category}</h2>
-          <div className="grid gap-3 lg:grid-cols-2">
-            {guides.map((guide) => (
-              <div key={guide.id} className="rounded-xl border border-border bg-surface p-4">
-                <Link
-                  to={`/hosting/${guide.id}`}
-                  className="group flex items-start justify-between gap-3 text-[15px] font-medium hover:text-link"
-                >
-                  {guide.title}
-                  <ArrowUpRight className="mt-0.5 size-4 shrink-0 text-muted" />
-                </Link>
-                <p className="mt-2 text-[13px] leading-relaxed text-muted">{guide.description}</p>
-                <div className="mt-3 flex flex-wrap gap-1.5">
-                  {guide.providers.map((p) => (
-                    <Chip key={p}>{p}</Chip>
-                  ))}
-                </div>
-                <p className="mt-3 text-[12px] text-muted">{guide.cost}</p>
-                {guide.projects.length > 0 && (
-                  <ul className="mt-3 flex flex-wrap gap-x-3 gap-y-1 border-t border-border pt-3 text-[12px] text-muted">
-                    {guide.projects.map((p) => (
-                      <li key={p.id}>
-                        {projects.some((project) => project.id === p.id) ? (
-                          <Link to={`/p/${p.id}`} className="hover:text-link">
-                            {p.name}
-                          </Link>
-                        ) : (
-                          <span>{p.name}</span>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            ))}
-          </div>
-        </section>
-      ))}
-      {data?.guides.some((g) => g.private) && (
-        <p className="text-[12px] text-muted">
-          Personal guides stay on this machine and are not included in Git. Back up the local guide
-          folder separately.
-        </p>
+      {groups.map(({ title, guides }) =>
+        guides?.length ? (
+          <section key={title} className="mb-7">
+            <h2 className="mb-2 text-[15px] font-semibold">{title}</h2>
+            <ul className="divide-y divide-border rounded-lg border border-border bg-surface">
+              {guides.map((guide) => (
+                <li key={guide.id} className="px-4 py-3">
+                  <Link
+                    to={`/hosting/${guide.id}`}
+                    className="flex items-center justify-between gap-3 text-[14px] font-medium hover:text-link"
+                  >
+                    {guide.title}
+                    <ArrowUpRight aria-hidden="true" className="size-4 shrink-0 text-muted" />
+                  </Link>
+                  {guide.projects.length ? (
+                    <ul className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-[12px] text-muted">
+                      {guide.projects.map((project) => (
+                        <li key={project.id}>
+                          {projects.some((candidate) => candidate.id === project.id) ? (
+                            <Link to={`/p/${project.id}`} className="hover:text-link">
+                              {project.name}
+                            </Link>
+                          ) : (
+                            project.name
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="mt-1 text-[13px] text-muted">{guide.description}</p>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null,
       )}
     </>
   )
 }
 export function HostingPage() {
   const { guideId } = useParams()
+  const { hash } = useLocation()
+  if (guideId === 'vercel-next') return <Navigate to={`/hosting/vercel-static${hash}`} replace />
   return (
     <div className="mx-auto max-w-5xl px-4 py-6 sm:px-8 sm:py-10">
       {guideId ? <GuideDetail key={guideId} id={guideId} /> : <HostingIndex />}

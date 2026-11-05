@@ -1,40 +1,33 @@
-# Static frontend on Vercel
-
-## Summary
-
-Local use needs the repository's supported Node version, package manager, and dependencies. Public hosting needs a successful production build and its static output. Visitors run the application in their browser; this recipe supplies no database, authentication service, or persistent backend.
+# Deploy a frontend on Vercel
 
 ## Run locally
 
-1. Read the project's README and package-manager lockfile. Use its declared Node version.
-2. Install locked dependencies (`npm ci`, or the project's pnpm/yarn equivalent).
-3. Run the documented dev script, normally `npm run dev`. Open the printed localhost URL. If occupied, select another port using that project's supported arguments.
-4. Stop with Ctrl+C. A dev or preview server is for local use; upload a production build for the public site.
+Use the Node version and package manager from the project's README or lockfile. For npm projects, run `npm ci` then `npm run dev` and open the printed URL.
 
 ## Deploy publicly
 
-1. In Vercel, choose **Add New → Project**, connect GitHub, and import the repository and intended production branch.
-2. Select the application root. For npm workspaces, retain the workspace root when dependencies require it.
-3. Select the detected framework, usually Vite. Set build command `npm run build` and output directory `dist` unless the repository specifies another path.
-4. Add only required production environment variables. `VITE_` values are public browser configuration: never put privileged secrets there. Redeploy after changing build-time variables.
-5. Deploy. Check the generated HTTPS URL, assets, mobile layout, and a nested route after refresh.
-6. For a client-side router, configure a Vercel rewrite from `/(.*)` to `/index.html` if needed. Do not use that blanket rewrite to replace API routes in a full-stack app.
-7. Verify any external API URL is production-ready. A Vite `server.proxy` setting does not exist in the public static build.
+1. Import the GitHub repository in Vercel. Select the production branch and app root. Keep the workspace root if the build needs workspace dependencies.
+2. Match the project's Node version and package manager. Use its build script (for example, `npm run build`).
 
-For a browser-only SPA, place this in `vercel.json` at the Vercel project root:
+   | App                             | Preset  | Build output      |
+   | ------------------------------- | ------- | ----------------- |
+   | Vite                            | Vite    | `dist` by default |
+   | Next.js with `output: 'export'` | Next.js | `out`             |
+   | Next.js with server routes      | Next.js | Framework default |
 
-```json
-{
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
-}
-```
+3. Set required variables for each deployment environment. `VITE_` and `NEXT_PUBLIC_` variables are public. A Vite development proxy doesn't run in production, so configure a production API URL if the frontend uses one.
+4. Deploy and check the generated HTTPS URL, including deep-link refresh and any API routes. For a browser-only Vite app with client-side routing, add this to `vercel.json` if refresh returns 404:
+
+   ```json
+   {
+     "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+   }
+   ```
 
 ## Domain
 
-The generated project URL is sufficient for demos. For an existing subdomain, follow [Connect a domain](/hosting/domains).
+Use the generated URL or [connect a domain](/hosting/domains).
 
 ## Cost
 
-Checked October 28, 2026: Vercel Hobby is $0 for eligible personal, non-commercial projects within quotas. Pro starts at $20 per developer/month with additional usage charges; choose it for commercial use or higher limits. Paying does not automatically make browser-side code faster. See [pricing](https://vercel.com/pricing) and [Hobby conditions](https://vercel.com/docs/plans/hobby).
-
-Sources: [Vite deployment](https://vercel.com/docs/frameworks/frontend/vite), [rewrites](https://vercel.com/docs/rewrites), [environment variables](https://vercel.com/docs/environment-variables).
+Check [Vercel pricing](https://vercel.com/pricing) and [Hobby eligibility](https://vercel.com/docs/plans/hobby) before deploying. See [Vite on Vercel](https://vercel.com/docs/frameworks/frontend/vite) and [Next.js on Vercel](https://vercel.com/docs/frameworks/full-stack/nextjs) for framework details.
