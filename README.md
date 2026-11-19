@@ -17,6 +17,10 @@ Open **http://localhost:4600** in your browser. By default, Project Explorer fin
 
 Press **Ctrl+C** in the terminal to stop Project Explorer and the development servers it started. After an unexpected shutdown, the next startup attempts to clean up recorded servers using `.hub/pids.json`.
 
+## Move an existing checkout
+
+Stop Project Explorer before moving its directory. Move the whole checkout so `private.env`, `hub.local.json`, `.hosting/`, and `.hub/` stay with it. Start it again from the new repository root. Update any shortcuts or absolute paths in your local settings that pointed to the old location.
+
 ## Choose your projects folder
 
 Create your own local settings:
